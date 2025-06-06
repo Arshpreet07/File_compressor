@@ -45,4 +45,4 @@ g++ -std=c++17 main.cpp -o FileCompressor
 
 
 ## Motivation Behind the Project
-This project was born from a desire to dive deep into data compression techniques and understand how real-world encoders work at the bit level. Huffman coding offered a powerful yet intuitive entry point into compression algorithms. Beyond academics, this tool offers a foundation to explore more advanced concepts such as adaptive Huffman, LZW compression, or even integrating into custom archivers. It also serves as a clean example of working with binary files, memory safety, and low-level C++.
+This project was born from a desire to dive deep into data compression techniques and understand how real-world encoders work at the bit level. Huffman coding offered a powerful yet intuitive entry point into compression algorithms. Beyond academics, this tool lays a strong foundation for exploring more advanced compression techniques in the future and serves as a clean example of working with binary files, memory safety, and low-level C++.
