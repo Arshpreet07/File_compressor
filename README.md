@@ -36,6 +36,7 @@ A lightweight and efficient **file compression-decompression tool** implemented 
 > Use the following terminal commands to compile and run:
 
 g++ -std=c++17 main.cpp -o FileCompressor
+
 ./FileCompressor
 
 1. Open the folder in **Visual Studio Code** or open the terminal and navigate to the project directory.
