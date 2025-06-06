@@ -12,7 +12,7 @@ const int CHAR_RANGE = 256; //ASCII range
 
 struct Compare {
     bool operator()(HuffmanNode* a, HuffmanNode* b) {
-        return a->freq > b->freq; // min-heap
+        return a->freq > b->freq; // Min-heap
     }
 };
 
@@ -25,7 +25,7 @@ void countFrequencies(const string &filename, vector<int>& freqArray) {
 
     unsigned char data;
     while (infile.read(reinterpret_cast<char*>(&data), 1)) {
-        freqArray[data]++;
+        freqArray[data]++; //Count of frequency of each character
     }
 
     infile.close();
@@ -95,7 +95,7 @@ void generateCodes(HuffmanNode* root, unordered_map<char, string>& codeMap, stri
     if (!root) return;
 
     if (!root->left && !root->right) {
-        codeMap[root->data] = currentCode;
+        codeMap[root->data] = currentCode; // Example :- "d = 1001"
         return;
     }
 
@@ -109,7 +109,7 @@ string getEncodedString(const string& filename, const unordered_map<char, string
     char ch;
 
     while (in.get(ch)) {
-        encodedStr += codeMap.at(ch);
+        encodedStr += codeMap.at(ch); //Creating a single string of bits
     }
 
     return encodedStr;
@@ -180,10 +180,13 @@ void decompress(const string& inputBin, const string& outputFile) {
         freqArray[i] = freq;
     }
 
+    //Get number of paddingBits at rear
     uint8_t paddingBits = static_cast<uint8_t>(in.get());
 
+    //Create the same huffman tree
     HuffmanNode* root = buildHuffmanTree(freqArray);
 
+    //create the same string of encoded characters
     string bitStream;
     char byte;
     while (in.read(&byte, 1)) {
@@ -191,8 +194,10 @@ void decompress(const string& inputBin, const string& outputFile) {
             bitStream += ((byte >> i) & 1) ? '1' : '0';
     }
 
+    //Remove padding bits from rear
     bitStream = bitStream.substr(0, bitStream.size() - paddingBits);
 
+    //Recover the text file
     ofstream out(outputFile);
     HuffmanNode* curr = root;
     for (char bit : bitStream) {
@@ -227,10 +232,12 @@ int main() {
             cout << "Enter the output compressed file name (e.g., compressed.bin): ";
             cin >> outputFile;
 
-            vector<int> freqArray(CHAR_RANGE, 0);
-            countFrequencies(inputFile, freqArray);
+            // Step 1 : count frequency of each char
+            vector<int> freqArray(CHAR_RANGE, 0); 
+            countFrequencies(inputFile, freqArray); 
             // printFrequencyMap(freqArray);
 
+            // Step 2 : Building the huffman Tree
             HuffmanNode* root = buildHuffmanTree(freqArray);
 
             if (!root) {
@@ -238,10 +245,12 @@ int main() {
                 continue;
             }
 
+            // Step 3 : Assign code to each char
             unordered_map<char, string> codeMap;
             generateCodes(root, codeMap);
             // printHuffmanTree(root, "");
-
+            
+            //Step 4 : Compressing the file
             string encodedStr = getEncodedString(inputFile, codeMap);
             compress(encodedStr, outputFile, freqArray);
 
